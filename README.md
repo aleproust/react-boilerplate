@@ -1,1 +1,1 @@
-# React boiler plate with navigation menu
+# React boilerplate with navigation menu
