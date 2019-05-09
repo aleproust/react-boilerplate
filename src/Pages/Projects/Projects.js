@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-
+import ExampleComponent from '../../Components/Example/Example'
 class Projects extends Component {
     render(){
-        return <h2>Projects</h2>
+        return <ExampleComponent></ExampleComponent>
+    
     }
 }
 export default Projects
