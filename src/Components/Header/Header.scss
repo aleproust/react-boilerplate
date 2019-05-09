@@ -1,0 +1,32 @@
+.Header{
+    height: 4rem;
+    background-color:#001529;
+    display: flex;
+
+    color: rgba(white, 0.5);
+    &-logo{
+        font-size: 3rem;
+    }
+    &-actions{
+        flex: 1;
+        display: flex;
+        &-item{
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            height: 100%;
+            width: 6rem;
+            &:hover{
+                color: white;
+            }
+            
+        }
+    }
+    &-user{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        padding: 0.4rem;
+    }
+}
