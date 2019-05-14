@@ -1,5 +1,5 @@
 import app from 'firebase/app';
-
+import 'firebase/auth';
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -15,13 +15,19 @@ class Firebase {
     this.auth = app.auth();
   }
 
-  loginWithGithub= () => {
+  loginWithGithub = () => {
     var provider = new app.auth.GithubAuthProvider();
-    return app.auth().signInWithPopup(provider).then(({result, credential}) =>
-      ( {
-      ...result.user,
-      ...credential
-      })).catch(function (error) {
+    provider.addScope('repo');
+    return this.auth.signInWithPopup(provider).then(result =>
+       ({
+        name: result.user.displayName,
+        email: result.user.email,
+        avatar: result.user.photoURL,
+        uid:result.user.uid,
+        accessToken:result.credential.accessToken
+      })
+    ).catch((error) => {
+        debugger
       // Handle Errors here.
       var errorCode = error.code;
       // The email of the user's account used.

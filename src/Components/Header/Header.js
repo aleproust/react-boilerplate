@@ -5,7 +5,7 @@ import * as ROUTES from "../../Constants/routes"
 import { Link } from 'react-router-dom';
 
 
-const Header = ({ loginClicked }) => (
+const Header = ({ loginClicked, username }) => (
     <header className="Header">
         <div className="Header-logo">Le logo</div>
         <div className="Header-actions">
@@ -15,6 +15,7 @@ const Header = ({ loginClicked }) => (
         </div>
         <div className="Header-user">
             <Button type="primary" onClick={loginClicked}>Login with github</Button>
+            <label>{username}</label>
         </div>
     </header>
   );
