@@ -12,7 +12,8 @@ const INITIAL_STATE = {
   avatar: '',
   email:'',
   uid: '',
-  accessToken: ''
+  accessToken: '',
+  isAuthenticated: false
 }
 
 class App extends Component {
@@ -22,20 +23,21 @@ class App extends Component {
     this.state = { ...INITIAL_STATE };
   }
   componentDidMount() {
-    this.props.firebase.auth.onAuthStateChanged(({email, photoURL, uid}) => {
-      const authUser = {
-        email,
-        avatar: photoURL,
-        uid:uid
-      }
-      authUser.email
-        ? this.setState({ ...authUser })
+    this.listener = this.props.firebase.auth.onAuthStateChanged((authUser) => {
+      authUser
+        ? this.setState({ email:authUser.email,
+          avatar: authUser.photoURL,
+          uid:authUser.uid,
+          isAuthenticated: true })
         : this.setState({ ...INITIAL_STATE });
     });
   }
+  componentWillUnmount() {
+    this.listener();
+  }
 
   LoginClick() {
-    return this.props.firebase.auth.loginWithGithub().then(({avatar, email, uid, accessToken }) => {
+    return this.props.firebase.loginWithGithub().then(({avatar, email, uid, accessToken }) => {
       this.setState({...this.state, avatar, email, uid, accessToken})
     })
     
@@ -44,7 +46,7 @@ class App extends Component {
     return (
       <div className="App">
           <Router>
-            <Header loginClicked={() =>this.LoginClick()} avatar={this.state.avatar}></Header>
+            <Header isAuthenticated={this.state.isAuthenticated} loginClicked={() =>this.LoginClick()} avatar={this.state.avatar}></Header>
             <Route exact path={ROUTES.PROJECTS} component={Projects} />
             <Route path={ROUTES.INFRASTRUCTURE} component={Infrastructure} />
             <Route path={ROUTES.SETTINGS} component={Settings} />
