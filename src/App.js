@@ -1,35 +1,28 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.scss';
+import { withFirebase } from './Components/Firebase';
 import Header from './Components/Header/Header';
-import Settings from "./Pages/Settings/Settings"
-import Projects from "./Pages/Projects/Projects"
-import Infrastructure from "./Pages/Infrastructure/Infrastructure"
 import * as ROUTES from "./Constants/routes";
-import  { withFirebase } from './Components/Firebase';
+import Infrastructure from "./Pages/Infrastructure/Infrastructure";
+import Projects from "./Pages/Projects/Projects";
+import Settings from "./Pages/Settings/Settings";
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { login, logout } from "./Store/actions/user.actions";
 
-const INITIAL_STATE = {
-  avatar: '',
-  email:'',
-  uid: '',
-  accessToken: '',
-  isAuthenticated: false
-}
+
 
 class App extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = { ...INITIAL_STATE };
-  }
   componentDidMount() {
     this.listener = this.props.firebase.auth.onAuthStateChanged((authUser) => {
       authUser
-        ? this.setState({ email:authUser.email,
+        ? this.props.login({ email:authUser.email,
           avatar: authUser.photoURL,
           uid:authUser.uid,
           isAuthenticated: true })
-        : this.setState({ ...INITIAL_STATE });
+        : this.props.logout();
     });
   }
   componentWillUnmount() {
@@ -38,7 +31,7 @@ class App extends Component {
 
   LoginClick() {
     return this.props.firebase.loginWithGithub().then(({avatar, email, uid, accessToken }) => {
-      this.setState({...this.state, avatar, email, uid, accessToken})
+      this.props.login({avatar, email, uid, accessToken });
     })
     
   }
@@ -46,7 +39,7 @@ class App extends Component {
     return (
       <div className="App">
           <Router>
-            <Header isAuthenticated={this.state.isAuthenticated} loginClicked={() =>this.LoginClick()} avatar={this.state.avatar}></Header>
+            <Header isAuthenticated={this.props.isAuthenticated} loginClicked={() =>this.LoginClick()} avatar={this.props.avatar}></Header>
             <Route exact path={ROUTES.PROJECTS} component={Projects} />
             <Route path={ROUTES.INFRASTRUCTURE} component={Infrastructure} />
             <Route path={ROUTES.SETTINGS} component={Settings} />
@@ -64,4 +57,13 @@ class App extends Component {
   } 
 
 }
-export default withFirebase(App);
+const mapStateToProps = state => ({
+  ...state.userState
+});
+const mapDispatchToProps = dispatch => ({
+  login: (user) => dispatch(login(user)),
+  logout: () => dispatch(logout())
+});
+export default compose(connect(
+  mapStateToProps,
+  mapDispatchToProps),withFirebase)(App);

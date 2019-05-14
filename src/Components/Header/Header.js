@@ -7,10 +7,10 @@ import Navigation from "../Navigation/Navigation";
 const Header = ({ isAuthenticated, loginClicked, avatar }) => (
     <header className="Header">
         <div className="Header-logo">Le logo</div>
-        <Navigation authUser= {isAuthenticated}></Navigation>
+        <Navigation></Navigation>
         <div className="Header-user">
             {!isAuthenticated ? <Button type="primary" onClick={loginClicked}>Login with github</Button>: 
-                <img class="Header-user-avatar" alt="" src={avatar}></img>}
+                <img className="Header-user-avatar" alt="" src={avatar}></img>}
         </div>
     </header>
   );
