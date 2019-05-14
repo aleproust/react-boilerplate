@@ -6,11 +6,13 @@ import Settings from "./Pages/Settings/Settings"
 import Projects from "./Pages/Projects/Projects"
 import Infrastructure from "./Pages/Infrastructure/Infrastructure"
 import * as ROUTES from "./Constants/routes";
-import  { FirebaseContext } from './Components/Firebase';
+import  { FirebaseContext, withFirebase } from './Components/Firebase';
+
 const INITIAL_STATE = {
-  username: '',
+  avatar: '',
   email:'',
-  other: {}
+  uid: '',
+  accessToken: ''
 }
 
 class App extends Component {
@@ -19,10 +21,24 @@ class App extends Component {
 
     this.state = { ...INITIAL_STATE };
   }
+  componentDidMount() {
+    this.props.firebase.auth.onAuthStateChanged(({email, photoURL, uid}) => {
+      const authUser = {
+        email,
+        avatar: photoURL,
+        uid:uid
+      }
+      authUser.email
+        ? this.setState({ ...authUser })
+        : this.setState({ ...INITIAL_STATE });
+    });
+  }
 
   LoginClick(firebase) {
     //implement login
-    return firebase.loginWithGithub().then(result => console.log(result))
+    return firebase.loginWithGithub().then(({avatar, email, uid, accessToken }) => {
+      this.setState({...this.state, avatar, email, uid, accessToken})
+    })
     
   }
   render() {
@@ -31,7 +47,7 @@ class App extends Component {
         
         <FirebaseContext.Consumer>{firebase => (
           <Router>
-          <Header loginClicked={() =>this.LoginClick(firebase)} username={this.state.username}></Header>
+          <Header loginClicked={() =>this.LoginClick(firebase)} avatar={this.state.avatar}></Header>
             <Route exact path={ROUTES.PROJECTS} component={Projects} />
           <Route path={ROUTES.INFRASTRUCTURE} component={Infrastructure} />
           <Route path={ROUTES.SETTINGS} component={Settings} />
@@ -50,4 +66,4 @@ class App extends Component {
   } 
 
 }
-export default App;
+export default withFirebase(App);

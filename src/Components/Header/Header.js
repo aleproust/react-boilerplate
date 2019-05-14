@@ -5,7 +5,7 @@ import * as ROUTES from "../../Constants/routes"
 import { Link } from 'react-router-dom';
 
 
-const Header = ({ loginClicked, username }) => (
+const Header = ({ loginClicked, avatar }) => (
     <header className="Header">
         <div className="Header-logo">Le logo</div>
         <div className="Header-actions">
@@ -14,8 +14,8 @@ const Header = ({ loginClicked, username }) => (
             <div className="Header-actions-item"><Link to={ROUTES.SETTINGS}>Settings</Link></div>
         </div>
         <div className="Header-user">
-            <Button type="primary" onClick={loginClicked}>Login with github</Button>
-            <label>{username}</label>
+            {!avatar ? <Button type="primary" onClick={loginClicked}>Login with github</Button>: 
+                <img class="Header-user-avatar"alt="" src={avatar}></img>}
         </div>
     </header>
   );

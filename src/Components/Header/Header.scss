@@ -28,5 +28,9 @@
         align-items: center;
         justify-content: space-around;
         padding: 0.4rem;
+        &-avatar{
+            width: 3rem;
+            height: 3rem;
+        }
     }
 }

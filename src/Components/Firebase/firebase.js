@@ -14,20 +14,19 @@ class Firebase {
     app.initializeApp(config);
     this.auth = app.auth();
   }
+  
 
   loginWithGithub = () => {
     var provider = new app.auth.GithubAuthProvider();
     provider.addScope('repo');
     return this.auth.signInWithPopup(provider).then(result =>
        ({
-        name: result.user.displayName,
         email: result.user.email,
         avatar: result.user.photoURL,
         uid:result.user.uid,
         accessToken:result.credential.accessToken
       })
-    ).catch((error) => {
-        debugger
+    ).catch((error) => {  
       // Handle Errors here.
       var errorCode = error.code;
       // The email of the user's account used.
