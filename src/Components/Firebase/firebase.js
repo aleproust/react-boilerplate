@@ -14,34 +14,34 @@ class Firebase {
     app.initializeApp(config);
     this.auth = app.auth();
   }
-  
+
 
   loginWithGithub = () => {
     var provider = new app.auth.GithubAuthProvider();
     provider.addScope('repo');
     return this.auth.signInWithPopup(provider).then(result =>
-       ({
+      ({
         email: result.user.email,
         avatar: result.user.photoURL,
-        uid:result.user.uid,
-        accessToken:result.credential.accessToken
+        uid: result.user.uid,
+        accessToken: result.credential.accessToken
       })
-    ).catch((error) => {  
+    ).catch((error) => {
       // Handle Errors here.
       var errorCode = error.code;
       // The email of the user's account used.
-      var email = error.email;
+      //var email = error.email;
       // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
+      //var credential = error.credential;
       if (errorCode === 'auth/account-exists-with-different-credential') {
-          alert('You have signed up with a different provider for that email.');
-          // Handle linking here if your app allows it.
+        alert('You have signed up with a different provider for that email.');
+        // Handle linking here if your app allows it.
       } else {
-          console.error(error);
+        console.error(error);
       }
-  });
+    });
   }
-  doSignOut = () => this.auth.signOut();
+  signOut = () => this.auth.signOut();
 }
 
 export default Firebase;
