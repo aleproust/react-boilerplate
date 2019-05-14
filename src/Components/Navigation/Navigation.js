@@ -1,28 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import * as ROUTES from '../../Constants/routes';
 
-import * as ROUTES from '../../constants/routes';
+const Navigation = ({ authUser }) => (
+    <div className="Header-actions">{authUser ? <NavigationAuth /> : <NavigationNonAuth />}</div>
+);
 
-const Navigation = () => (
-  <div>
-    <ul>
-      <li>
-        <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-      </li>
-      <li>
-        <Link to={ROUTES.LANDING}>Landing</Link>
-      </li>
-      <li>
-        <Link to={ROUTES.INFRASTRUCTURE}>Home</Link>
-      </li>
-      <li>
-        <Link to={ROUTES.ACCOUNT}>Account</Link>
-      </li>
-      <li>
-        <Link to={ROUTES.ADMIN}>Admin</Link>
-      </li>
-    </ul>
-  </div>
+const NavigationAuth = () => (
+        <>
+            <div className="Header-actions-item"><Link to={ROUTES.PROJECTS}>Projects</Link></div>
+            <div className="Header-actions-item"><Link to={ROUTES.INFRASTRUCTURE}>Infrastructure</Link></div>
+            <div className="Header-actions-item"><Link to={ROUTES.SETTINGS}>Settings</Link></div>
+        </>
+
+)
+
+const NavigationNonAuth = () => (
+        <div className="Header-actions-item"><Link to={ROUTES.LANDING}>Who's bobby</Link></div>
 );
 
 export default Navigation;
