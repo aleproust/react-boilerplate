@@ -39,26 +39,20 @@ class App extends Component {
     return (
       <div className="App">
           <Router>
-            <Header isAuthenticated={this.props.isAuthenticated} loginClicked={() =>this.LoginClick()} avatar={this.props.avatar}></Header>
-            <Route exact path={ROUTES.PROJECTS} component={Projects} />
-            <Route path={ROUTES.INFRASTRUCTURE} component={Infrastructure} />
-            <Route path={ROUTES.SETTINGS} component={Settings} />
+            <Header isAuthenticated={this.props.userState.isAuthenticated} loginClicked={() =>this.LoginClick()} avatar={this.props.userState.avatar}></Header>
+            <section className="container">
+              <Route exact path={ROUTES.PROJECTS} component={Projects} />
+              <Route path={ROUTES.INFRASTRUCTURE} component={Infrastructure} />
+              <Route path={ROUTES.SETTINGS} component={Settings} />
+            </section>
           </Router>
-        
-       
-
-        {/* <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-        <Route path={ROUTES.SETTINGS} component={SettingsPage} />
-        <Route path={ROUTES.HOME} component={HomePage} />
-        <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-        <Route path={ROUTES.ADMIN} component={AdminPage} /> */}
       </div>
     );
   } 
 
 }
-const mapStateToProps = state => ({
-  ...state.userState
+const mapStateToProps = ({userState}) => ({
+  userState
 });
 const mapDispatchToProps = dispatch => ({
   login: (user) => dispatch(login(user)),

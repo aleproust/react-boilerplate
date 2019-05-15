@@ -1,3 +1,5 @@
+@import './styles/colors.scss';
+
 body {
   font-size: 10px;
   margin: 0;
@@ -11,4 +13,40 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.container{
+  padding: 1rem;
+}
+
+
+// typography
+a,
+span{
+  font-size: 1rem;
+  &.small{
+    font-size: 0.8rem;
+  }
+
+  &.xsmall{
+    font-size: 0.6rem;
+  }
+
+  &.bold{
+    font-weight: 800;
+  }
+  &.big{
+    font-size: 1.4rem;
+  }
+}
+//
+.pointer{
+  cursor: pointer;
+}
+
+a{
+  color: $white-rabbit;
+  &:hover{
+    color: white;
+}
 }
