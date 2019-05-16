@@ -3,8 +3,11 @@ import { Route, Redirect } from 'react-router-dom';
 
 
 const PrivateRoute = ({ isLoaded, isAuthenticated, component: Component, ...rest }) => {
+    if(!isLoaded){
+        return null;
+    }
     return (
-        !isLoaded ? null : <Route
+     <Route
             {...rest}
             render={props =>
 
