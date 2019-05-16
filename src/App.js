@@ -10,18 +10,19 @@ import Settings from "./Pages/Settings/Settings";
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { login, logout } from "./Store/actions/user.actions";
-
-
+import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
+import Landing from './Pages/Langing/Landing';
 
 class App extends Component {
-
   componentDidMount() {
     this.listener = this.props.firebase.auth.onAuthStateChanged((authUser) => {
       authUser
-        ? this.props.login({ email:authUser.email,
+        ? this.props.login({
+          email: authUser.email,
           avatar: authUser.photoURL,
-          uid:authUser.uid,
-          isAuthenticated: true })
+          uid: authUser.uid,
+          isAuthenticated: true
+        })
         : this.props.logout();
     });
   }
@@ -30,25 +31,23 @@ class App extends Component {
   }
 
   LoginClick() {
-    return this.props.firebase.loginWithGithub().then(({avatar, email, uid, accessToken }) => {
-      this.props.login({avatar, email, uid, accessToken });
+    return this.props.firebase.loginWithGithub().then(({ avatar, email, uid, accessToken }) => {
+      this.props.login({ avatar, email, uid, accessToken });
     })
-    
   }
   render() {
     return (
       <div className="App">
-          <Router>
-            <Header isAuthenticated={this.props.userState.isAuthenticated} loginClicked={() =>this.LoginClick()} avatar={this.props.userState.avatar}></Header>
-            <section className="container">
-              <Route exact path={ROUTES.PROJECTS} component={Projects} />
-              <Route path={ROUTES.INFRASTRUCTURE} component={Infrastructure} />
-              <Route path={ROUTES.SETTINGS} component={Settings} />
-            </section>
-          </Router>
+        <Router>
+          <Header isLoaded={this.props.isLoaded} isAuthenticated={this.props.isAuthenticated} loginClicked={() => this.LoginClick()} avatar={this.props.avatar}></Header>
+          <PrivateRoute exact isLoaded={this.props.isLoaded} isAuthenticated={this.props.isAuthenticated} path={ROUTES.PROJECTS} component={Projects} />
+          <PrivateRoute exact isLoaded={this.props.isLoaded} isAuthenticated={this.props.isAuthenticated} path={ROUTES.INFRASTRUCTURE} component={Infrastructure} />
+          <PrivateRoute exact isLoaded={this.props.isLoaded} isAuthenticated={this.props.isAuthenticated} path={ROUTES.SETTINGS} component={Settings} />
+          <Route exact path={ROUTES.LANDING} component={Landing} />
+        </Router>
       </div>
     );
-  } 
+  }
 
 }
 const mapStateToProps = ({userState}) => ({
@@ -60,4 +59,4 @@ const mapDispatchToProps = dispatch => ({
 });
 export default compose(connect(
   mapStateToProps,
-  mapDispatchToProps),withFirebase)(App);
+  mapDispatchToProps), withFirebase)(App);

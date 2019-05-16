@@ -4,7 +4,8 @@ export const INITIAL_USER_STATE = {
     email:'',
     uid: '',
     accessToken: '',
-    isAuthenticated: false
+    isAuthenticated: false,
+    isLoaded: false,
   }
   
 
@@ -13,11 +14,13 @@ export default (state, action) => {
       case "LOGIN":
         return {
             ...state,
-            ...action.user
+            ...action.user,
+            isLoaded: true,
         };
       case "LOGOUT":
         return {
-            user: {...INITIAL_USER_STATE}
+            ...INITIAL_USER_STATE,
+            isLoaded: true
         }
       default:
         return {...INITIAL_USER_STATE};
