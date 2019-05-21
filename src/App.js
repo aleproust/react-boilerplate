@@ -19,11 +19,11 @@ class App extends Component {
   componentDidMount() {
     this.listener = this.props.firebase.auth.onAuthStateChanged((authUser) => {
       if(authUser){
+        this.props.resumeGithubToken()
         this.props.login({ email:authUser.email,
                           avatar: authUser.photoURL,
                           uid:authUser.uid,
                           isAuthenticated: true })
-        this.props.resumeGithubToken()
       }
       else{
         this.props.logout();
