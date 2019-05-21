@@ -36,13 +36,14 @@ class App extends Component {
     })
   }
   render() {
+    const userState = this.props.userState;
     return (
       <div className="App">
         <Router>
-          <Header isLoaded={this.props.isLoaded} isAuthenticated={this.props.isAuthenticated} loginClicked={() => this.LoginClick()} avatar={this.props.avatar}></Header>
-          <PrivateRoute exact isLoaded={this.props.isLoaded} isAuthenticated={this.props.isAuthenticated} path={ROUTES.PROJECTS} component={Projects} />
-          <PrivateRoute exact isLoaded={this.props.isLoaded} isAuthenticated={this.props.isAuthenticated} path={ROUTES.INFRASTRUCTURE} component={Infrastructure} />
-          <PrivateRoute exact isLoaded={this.props.isLoaded} isAuthenticated={this.props.isAuthenticated} path={ROUTES.SETTINGS} component={Settings} />
+          <Header isLoaded={userState.isLoaded} isAuthenticated={userState.isAuthenticated} loginClicked={() => this.LoginClick()} avatar={userState.avatar}></Header>
+          <PrivateRoute exact isLoaded={userState.isLoaded} isAuthenticated={userState.isAuthenticated} path={ROUTES.PROJECTS} component={Projects} />
+          <PrivateRoute exact isLoaded={userState.isLoaded} isAuthenticated={userState.isAuthenticated} path={ROUTES.INFRASTRUCTURE} component={Infrastructure} />
+          <PrivateRoute exact isLoaded={userState.isLoaded} isAuthenticated={userState.isAuthenticated} path={ROUTES.SETTINGS} component={Settings} />
           <Route exact path={ROUTES.LANDING} component={Landing} />
         </Router>
       </div>
