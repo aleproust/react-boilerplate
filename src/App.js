@@ -11,19 +11,24 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { login, logout } from "./Store/actions/user.actions";
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
-import Landing from './Pages/Langing/Landing';
+import Landing from './Pages/Landing/Landing';
+import { setGithubToken,  resumeGithubToken, initGithubApi} from "./Store/actions/github.actions";
+
 
 class App extends Component {
   componentDidMount() {
     this.listener = this.props.firebase.auth.onAuthStateChanged((authUser) => {
-      authUser
-        ? this.props.login({
-          email: authUser.email,
-          avatar: authUser.photoURL,
-          uid: authUser.uid,
-          isAuthenticated: true
-        })
-        : this.props.logout();
+      if(authUser){
+        this.props.login({ email:authUser.email,
+                          avatar: authUser.photoURL,
+                          uid:authUser.uid,
+                          isAuthenticated: true })
+        this.props.resumeGithubToken()
+      }
+      else{
+        this.props.logout();
+      }
+     
     });
   }
   componentWillUnmount() {
@@ -31,8 +36,9 @@ class App extends Component {
   }
 
   LoginClick() {
-    return this.props.firebase.loginWithGithub().then(({ avatar, email, uid, accessToken }) => {
-      this.props.login({ avatar, email, uid, accessToken });
+    return this.props.firebase.loginWithGithub().then(({avatar, email, uid, accessToken }) => {
+      this.props.login({avatar, email, uid, accessToken });
+      this.props.setGithubToken(accessToken)
     })
   }
   render() {
@@ -56,7 +62,15 @@ const mapStateToProps = ({userState}) => ({
 });
 const mapDispatchToProps = dispatch => ({
   login: (user) => dispatch(login(user)),
-  logout: () => dispatch(logout())
+  logout: () => dispatch(logout()),
+  setGithubToken: (token)=> {
+    dispatch(setGithubToken(token))
+    dispatch(initGithubApi())
+  },
+  resumeGithubToken: () => {
+    dispatch(resumeGithubToken())
+    dispatch(initGithubApi())
+  }
 });
 export default compose(connect(
   mapStateToProps,

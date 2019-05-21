@@ -1,9 +1,28 @@
 import React, { Component } from 'react';
 import ExampleComponent from '../../Components/Example/Example'
+import { connect } from 'react-redux';
+import {listRepositories} from '../../Middleware/github.middleware';
 class Projects extends Component {
+    state = {
+        projects: []
+    }
+    componentDidMount(){  
+        if(this.props.githubState.me){
+            listRepositories(this.props.githubState.me).then(projects => this.setState({...this.state, projects}))
+        }
+    }
     render(){
-        return <ExampleComponent></ExampleComponent>
-    
+        const projectsDOM = this.state.projects.map((p, index) => (<h2 key={index}>{p.name}</h2>))
+        return (<div>
+                <ExampleComponent></ExampleComponent>
+                <div>{ projectsDOM}</div>
+            </div>
+            
+            )
     }
 }
-export default Projects
+
+const mapStateToProps = state => {
+    return {githubState: state.githubState}
+  };
+export default connect(mapStateToProps)(Projects);

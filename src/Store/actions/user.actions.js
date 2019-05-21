@@ -1,15 +1,18 @@
 
 export const login =  (user) =>{
     return {
-        type: "LOGIN",
+        type: Actions.LOGIN,
         user
     }
 };
 
 export const logout = () => {
     return {
-        type: "LOGOUT"
+        type: Actions.LOGOUT
     }
 };
 
-
+export const Actions = {
+    LOGIN: "LOGIN",
+    LOGOUT: "LOGOUT" 
+}
