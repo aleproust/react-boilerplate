@@ -6,12 +6,14 @@ class Projects extends Component {
     state = {
         projects: []
     }
-    componentDidMount(){  
-        if(this.props.githubState.me){
-            listRepositories(this.props.githubState.me).then(projects => this.setState({...this.state, projects}))
-        }
+    componentDidMount(){
+        listRepositories(this.props.githubState.me).then(projects => this.setState({...this.state, projects}))
     }
+
+
     render(){
+        
+        
         const projectsDOM = this.state.projects.map((p, index) => (<h2 key={index}>{p.name}</h2>))
         return (<div>
                 <ExampleComponent></ExampleComponent>
