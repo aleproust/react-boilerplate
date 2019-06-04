@@ -1,3 +1,4 @@
+import { Actions } from "../actions/user.actions";
 
 export const INITIAL_USER_STATE = {
     avatar: '',
@@ -11,19 +12,20 @@ export const INITIAL_USER_STATE = {
 
 export default (state, action) => {
     switch (action.type) {
-      case "LOGIN":
+      
+      case Actions.LOGIN:
         return {
             ...state,
             ...action.user,
             isLoaded: true,
         };
-      case "LOGOUT":
+      case Actions.LOGOUT:
         return {
             ...INITIAL_USER_STATE,
             isLoaded: true
         }
       default:
-        return {...INITIAL_USER_STATE};
+        return {...state};
     }
   };
   
