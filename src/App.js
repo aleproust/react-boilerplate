@@ -7,6 +7,7 @@ import * as ROUTES from "./Constants/routes";
 import Infrastructure from "./Pages/Infrastructure/Infrastructure";
 import Projects from "./Pages/Projects/Projects";
 import Settings from "./Pages/Settings/Settings";
+import Workspaces from "./Pages/Workspaces/Workspaces";
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { login, logout } from "./Store/actions/user.actions";
@@ -50,6 +51,7 @@ class App extends Component {
           <PrivateRoute exact isLoaded={userState.isLoaded} isAuthenticated={userState.isAuthenticated} path={ROUTES.PROJECTS} component={Projects} />
           <PrivateRoute exact isLoaded={userState.isLoaded} isAuthenticated={userState.isAuthenticated} path={ROUTES.INFRASTRUCTURE} component={Infrastructure} />
           <PrivateRoute exact isLoaded={userState.isLoaded} isAuthenticated={userState.isAuthenticated} path={ROUTES.SETTINGS} component={Settings} />
+          <PrivateRoute exact isLoaded={userState.isLoaded} isAuthenticated={userState.isAuthenticated} path={ROUTES.WORKSPACES} component={Workspaces} />
           <Route exact path={ROUTES.LANDING} component={Landing} />
         </Router>
       </div>
