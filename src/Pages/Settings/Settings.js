@@ -24,7 +24,7 @@ class Settings extends Component {
               .hexSideColor(d => weightColor(d.sumWeight))
               .hexBinMerge(true)
               .pointsMerge(false)
-              .pointsTransitionDuration(5000)
+              .pointsTransitionDuration(1000)
               .enablePointerInteraction(false)
                         
           myGlobe.controls().autoRotate = true;
