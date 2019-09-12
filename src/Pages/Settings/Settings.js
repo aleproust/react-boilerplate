@@ -11,6 +11,8 @@ class Settings extends Component {
         this.myRef = React.createRef();
       }
     componentDidMount(){
+        const weightColor = d3.scaleSequentialSqrt(d3.interpolateYlOrRd)
+        .domain([0, 1e7]);
         const myGlobe = Globe();
         myGlobe(this.myRef.current)
         .globeImageUrl('//cdn.jsdelivr.net/npm/three-globe/example/img/earth-night.jpg')
@@ -32,37 +34,6 @@ class Settings extends Component {
           .then(csv => d3.csvParse(csv, ({ lat, lng, pop }) => ({ lat: +lat, lng: +lng, pop: +pop })))
           .then(data => myGlobe.hexBinPointsData(data));
         
-        // We're going to ask a file for the JSON data.
-        var xhr = new XMLHttpRequest();
-        const weightColor = d3.scaleSequentialSqrt(d3.interpolateYlOrRd)
-        .domain([0, 1e7]);
-  
-        // Where do we get the data?
-        // xhr.open( 'GET', 'https://vasturiano.github.io/globe.gl/example/datasets/world_population.csv', true );
-        
-        // // What do we do when we have it?
-        // xhr.onreadystatechange = () => {
-        
-        //     // If we've received the data
-        //     if ( xhr.readyState === 4 && xhr.status === 200 ) {
-        //         debugger
-                
-        //         // Parse the JSON
-        //         var data = JSON.parse( xhr.responseText );
-        //         // const gData = data[0][1].map(([lat, lng, size])=> ({lat, lng, size, color:'red'}))
-        //         const N = 300;
-        //         const gData = [...Array(N).keys()].map(() => ({
-        //             lat: (Math.random() - 0.5) * 180,
-        //             lng: (Math.random() - 0.5) * 360,
-        //             size: Math.random() / 3,
-        //             color: ['red', 'white', 'blue', 'green'][Math.round(Math.random() * 3)]
-        //           }));
-
-        
-        //     }
-        
-        // };
-        // xhr.send( null );
     }
     LogoutClick = () => {
         return this.props.firebase.signOut().then(() => {
